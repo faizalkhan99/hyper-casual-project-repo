@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     bool IsGrounded()
     {
         Vector3 feetPosition = transform.position - new Vector3(0f, 0.5f, 0f);
-        float rayLength = 0.1f;
+        float rayLength = 1f;
         RaycastHit hit;
 
         if (Input.GetMouseButton(0) && Physics.Raycast(feetPosition, Vector3.down, out hit, rayLength))
