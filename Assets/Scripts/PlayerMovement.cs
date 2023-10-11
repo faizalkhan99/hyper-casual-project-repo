@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     Rigidbody rb;
     public float _movespeed;
+    [SerializeField] float maxSpeed;
 
     private void Awake()
     {
@@ -14,6 +15,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.AddForce(new Vector3(_movespeed * Time.fixedDeltaTime,0,0) , ForceMode.Impulse);
+        Debug.Log(rb.velocity.magnitude);
+        if(rb.velocity.magnitude > maxSpeed)
+        {
+            return;
+        }
+        rb.AddForce(new Vector3(_movespeed * Time.fixedDeltaTime,0,0) , ForceMode.Acceleration);
     }
 }

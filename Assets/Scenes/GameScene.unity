@@ -6654,7 +6654,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38347203156749749b83ae6fe84c2d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movespeed: 10
+  _movespeed: 250
+  maxSpeed: 10
 --- !u!114 &1660406094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6667,8 +6668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27e675b0d1533754cb10dcbeab08ce9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UpwardForce: 3000
-  _downwardForce: 1000
+  _UpwardForce: 4000
 --- !u!1 &1664141601
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ public class Touch_Controls : MonoBehaviour
     int _doubleJumpCounter;
     float _jumpForce;
     PlayerMovement playermove;
-    [SerializeField] float _UpwardForce , _downwardForce;
+    [SerializeField] float _UpwardForce;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>(); 
@@ -23,14 +23,9 @@ public class Touch_Controls : MonoBehaviour
     private void Update()
     {
         Touch();
-        if (_doubleJumpCounter == 2)
-        {
-            _doubleJumpCounter = 2;
-        }
-
         if (!_isgrounded && _doubleJumpCounter == 2)
         {
-            rb.AddForce(Vector3.down * _downwardForce * Time.deltaTime);
+            
             _jumpForce = 0;
         }
         else
