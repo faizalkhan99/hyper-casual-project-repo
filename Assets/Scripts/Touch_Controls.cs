@@ -1,19 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Touch_Controls : MonoBehaviour
 {
+    [SerializeField] float _UpwardForce , _range;
+    [SerializeField] LayerMask _whatIsGrounded;
+
     bool _isgrounded;
-    Rigidbody rb;
     int _doubleJumpCounter;
     float _jumpForce;
-    PlayerMovement playermove;
-    [SerializeField] float _UpwardForce;
+    Rigidbody rb;
+    Vector3 startTouchPos;
+    Vector3 endTouchPos;
+    RaycastHit hit;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>(); 
-        playermove = GetComponent<PlayerMovement>();
     }
     private void Start()
     {
@@ -22,60 +23,47 @@ public class Touch_Controls : MonoBehaviour
 
     private void Update()
     {
+        Raycast();
         Touch();
-        if (!_isgrounded && _doubleJumpCounter == 2)
+        if(_isgrounded)
         {
-            
-            _jumpForce = 0;
-        }
-        else
-        {
-            _jumpForce = _UpwardForce;
-        }
-
-    }
-    void Touch()
-    {
-        for (int i = 0; i < Input.touchCount; i++)
-        {
-            Touch t = Input.GetTouch(i);
-
-            switch (t.phase)
-            {
-                case TouchPhase.Moved:
-                    if (t.position.y > transform.position.y)
-                    {
-                        rb.AddForce(Vector3.up * _jumpForce * Time.deltaTime);
-                    }
-                    break;
-                case TouchPhase.Ended:
-                    
-                    if (_doubleJumpCounter == 2)
-                    {
-                        _doubleJumpCounter = 2;
-                    }
-                    else if(_doubleJumpCounter != 2)
-                    {
-                        _doubleJumpCounter++;
-                    }
-                    break;
-
-            }
-        }
-    }
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            _isgrounded = true;
             _doubleJumpCounter = 0;
         }
     }
-    private void OnCollisionExit(Collision other)
+    void Touch()
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            startTouchPos = Input.GetTouch(0).position;
+        }
+
+        if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+        {
+            endTouchPos = Input.GetTouch(0).position;
+        }
+
+        if(endTouchPos.y > startTouchPos.y )
+        {
+            startTouchPos = Vector3.zero;
+            endTouchPos = Vector3.zero;
+            if(_doubleJumpCounter <= 0)
+            {
+                _doubleJumpCounter++;
+                rb.AddForce(Vector3.up * _jumpForce * 1000 * Time.fixedDeltaTime, ForceMode.Force);
+            }
+        }
+    }
+
+    void Raycast()
+    {
+        if(Physics.Raycast(transform.position , transform.TransformDirection(Vector3.down) , out hit, _range, _whatIsGrounded))
+        {
+            _isgrounded = true;
+        }
+        else
         {
             _isgrounded = false;
         }
     }
+
 }

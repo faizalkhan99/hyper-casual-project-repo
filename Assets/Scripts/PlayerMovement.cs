@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(rb.velocity.magnitude);
         if(rb.velocity.magnitude > maxSpeed)
         {
             return;
