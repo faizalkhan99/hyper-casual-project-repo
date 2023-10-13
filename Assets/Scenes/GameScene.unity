@@ -6668,7 +6668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27e675b0d1533754cb10dcbeab08ce9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UpwardForce: 20
+  _UpwardForce: 40
   _dashTimer: 0.5
   _doubleSwipeTimer: 0.5
   _whatIsGrounded:

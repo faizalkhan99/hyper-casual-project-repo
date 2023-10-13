@@ -83,8 +83,7 @@ public class Touch_Controls : MonoBehaviour
 
             if ((endTouchPos.y > startTouchPos.y) && startTouchPos.y != 0 && endTouchPos.y != 0)
             {
-                Debug.Log("Bs aise hi");
-                if (_doubleJumpCounter <= 0)
+                if (_doubleJumpCounter <= 1)
                 {
                     _doubleJumpCounter++;
                     rb.AddForce(Vector3.up * _jumpForce * 1000 * Time.deltaTime, ForceMode.Force);
