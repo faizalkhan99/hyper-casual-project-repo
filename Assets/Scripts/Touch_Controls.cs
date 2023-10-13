@@ -1,14 +1,15 @@
+using System.Collections;
 using UnityEngine;
 
 public class Touch_Controls : MonoBehaviour
 {
-    [SerializeField] float _UpwardForce, _dashTimer , _doubleSwipeTimer;
+    [SerializeField] float _UpwardForce, _dashTimer , _doubleSwipeTimer , _duckTimer;
     [SerializeField] LayerMask _whatIsGrounded;
-
-    bool _isgrounded ;
-    int _doubleJumpCounter , _doubleSwipeDownCounter , dashCounter;
+    
+    bool _isgrounded , _isDoubleSwipe ;
+    int _doubleJumpCounter, _doubleSwipeDownCounter, dashCounter;
     float _range;
-    float _jumpForce, _nextDashTimer , _nextDoubleSwipeTimer;
+    float _jumpForce, _nextDashTimer , _nextDoubleSwipeTimer , duckCounter , _nextDuckTimer;
     Rigidbody rb;
     PlayerMovement playerMove;
     Vector2 startTouchPos , endTouchPos;
@@ -22,6 +23,8 @@ public class Touch_Controls : MonoBehaviour
     {
         _jumpForce = _UpwardForce;
         _range = transform.localScale.y;
+        duckCounter = 0f;
+        _isDoubleSwipe = false;
     }
 
     private void Update()
@@ -34,25 +37,32 @@ public class Touch_Controls : MonoBehaviour
             _doubleJumpCounter = 0;
         }
 
+        if (dashCounter == 2)
+        {
+            Debug.Log("Dash....");
+            dashCounter = 0;
+        }
         if (Time.time > _nextDashTimer)
         {
             dashCounter = 0;
             _nextDashTimer = Time.time + _dashTimer;
         }
-        if (dashCounter == 2)
-        {
-            Debug.Log("Dash....");
-        }
 
         if (_doubleSwipeDownCounter == 2)
         {
-            Debug.Log("Player is underGround");
+            
             _doubleSwipeDownCounter = 0;
         }
         if (Time.time > _nextDoubleSwipeTimer)
         {
             _doubleSwipeDownCounter = 0;
             _nextDoubleSwipeTimer = Time.time + _doubleSwipeTimer;
+        }
+
+        if (Time.time > _nextDuckTimer)
+        {
+            duckCounter = 0;
+            _nextDuckTimer = Time.time + _duckTimer;
         }
     }
     void Touch()
@@ -93,11 +103,9 @@ public class Touch_Controls : MonoBehaviour
             }
             else if ((endTouchPos.y < startTouchPos.y) && startTouchPos.y != 0 && endTouchPos.y != 0)
             {
-                Debug.Log("Duck");
-                if(_doubleSwipeDownCounter <= 1)
-                {
-                    _doubleSwipeDownCounter++;
-                }
+                duckCounter++;
+                StopCoroutine(TimerForDuck());
+                StartCoroutine(TimerForDuck());
                 startTouchPos = Vector2.zero;
                 endTouchPos = Vector2.zero;
             }
@@ -106,7 +114,7 @@ public class Touch_Controls : MonoBehaviour
     }
 
     void Raycast()
-    {
+    {       
         if(Physics.Raycast(transform.position , Vector3.down , out hit, _range, _whatIsGrounded))
         {
             _isgrounded = true;
@@ -116,6 +124,20 @@ public class Touch_Controls : MonoBehaviour
             _isgrounded = false;
 
         }
+    }
+
+    IEnumerator TimerForDuck()
+    {
+        yield return new WaitForSeconds(_doubleSwipeTimer);
+        if(duckCounter >= 2) // change krna h 2 ya fir 2 or usse bda
+        {
+            Debug.Log("UnderGround");
+        }
+        else if(duckCounter == 1)
+        {
+            Debug.Log("Duck");
+        }
+        duckCounter = 0;
     }
 
 }

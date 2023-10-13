@@ -6670,7 +6670,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _UpwardForce: 40
   _dashTimer: 0.5
-  _doubleSwipeTimer: 0.5
+  _doubleSwipeTimer: 1
+  _duckTimer: 5
   _whatIsGrounded:
     serializedVersion: 2
     m_Bits: 8
