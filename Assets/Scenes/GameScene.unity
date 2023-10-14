@@ -6654,8 +6654,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38347203156749749b83ae6fe84c2d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movespeed: 0
-  maxSpeed: 0
+  _movespeed: 5
+  maxSpeed: 10
 --- !u!114 &1660406094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6670,7 +6670,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _UpwardForce: 40
   _dashTimer: 0.5
-  _doubleSwipeTimer: 1
+  _doubleSwipeTimer: 0.3
   _duckTimer: 5
   _whatIsGrounded:
     serializedVersion: 2

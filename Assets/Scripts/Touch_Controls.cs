@@ -129,7 +129,7 @@ public class Touch_Controls : MonoBehaviour
     IEnumerator TimerForDuck()
     {
         yield return new WaitForSeconds(_doubleSwipeTimer);
-        if(duckCounter >= 2) // change krna h 2 ya fir 2 or usse bda
+        if(duckCounter >= 2) 
         {
             Debug.Log("UnderGround");
         }
