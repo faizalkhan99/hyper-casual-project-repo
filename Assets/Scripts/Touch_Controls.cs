@@ -3,18 +3,18 @@ using UnityEngine;
 
 public class Touch_Controls : MonoBehaviour
 {
-    [SerializeField] float _UpwardForce, _dashTimer , _doubleSwipeTimer , _duckTimer , _dashDuration;
+    [SerializeField] float _UpwardForce, _dashTimer , _doubleSwipeTimer , _duckTimer , _dashDuration , _speedDecreaseTimer;
     [SerializeField] LayerMask _whatIsGrounded;
+    [SerializeField] BoxCollider groundColl;
     
-    bool _isgrounded , _isDoubleSwipe , _isUndergrounded;
-    int _doubleJumpCounter, _doubleSwipeDownCounter, dashCounter;
-    float _range;
-    float _jumpForce, _nextDashTimer , _nextDoubleSwipeTimer , duckCounter , _nextDuckTimer;
+    bool _isgrounded , _isUndergrounded;
+    int _doubleJumpCounter, dashCounter , _speedDecreaseCounter , duckCounter;
+    float _jumpForce,_range;
+    float _nextDashTimer , _nextDuckTimer , _nextspeedDecreaseTimer;
     Rigidbody rb;
     PlayerMovement playerMove;
     Vector2 startTouchPos , endTouchPos;
     RaycastHit hit;
-    [SerializeField] BoxCollider groundColl;
 
     private void Awake()
     {
@@ -25,8 +25,7 @@ public class Touch_Controls : MonoBehaviour
     {
         _jumpForce = _UpwardForce;
         _range = transform.localScale.y;
-        duckCounter = 0f;
-        _isDoubleSwipe = false;
+        duckCounter = 0;
         _isUndergrounded = false;
     }
 
@@ -43,33 +42,36 @@ public class Touch_Controls : MonoBehaviour
         if (dashCounter == 2)
         {
             StartCoroutine(DashTimer());
-            Debug.Log("Dash");
             dashCounter = 0;
         }
-        
+
+        if(_speedDecreaseCounter == 2)
+        {
+            Debug.Log("speed decreased");
+            _speedDecreaseCounter = 0;
+        }
+
+        // this is for dash restore timer
         if (Time.time > _nextDashTimer)
         {
             dashCounter = 0;
             _nextDashTimer = Time.time + _dashTimer;
         }
 
-        if (_doubleSwipeDownCounter == 2)
-        {
-            
-            _doubleSwipeDownCounter = 0;
-        }
-        if (Time.time > _nextDoubleSwipeTimer)
-        {
-            _doubleSwipeDownCounter = 0;
-            _nextDoubleSwipeTimer = Time.time + _doubleSwipeTimer;
-        }
-
+        // this is for duck timer restore.
         if (Time.time > _nextDuckTimer)
         {
             duckCounter = 0;
             _nextDuckTimer = Time.time + _duckTimer;
         }
+        if (Time.time > _nextspeedDecreaseTimer)
+        {
+            _speedDecreaseCounter = 0;
+            _nextspeedDecreaseTimer = Time.time + _speedDecreaseTimer;
+        }
     }
+
+    // It can handle all the touch control.
     void Touch()
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
@@ -89,9 +91,17 @@ public class Touch_Controls : MonoBehaviour
                 {
                     dashCounter++;
                 }
-                startTouchPos = Vector2.zero;
-                endTouchPos = Vector2.zero;
             }
+            else if((startTouchPos.x > endTouchPos.x) && startTouchPos.x != 0 && endTouchPos.x != 0)
+            {
+                if (_speedDecreaseCounter <= 1)
+                {
+                    _speedDecreaseCounter++;
+                }
+                
+            }
+            startTouchPos = Vector2.zero;
+            endTouchPos = Vector2.zero;
         }
         else if(Mathf.Abs(endTouchPos.x - startTouchPos.x) < Mathf.Abs(endTouchPos.y - startTouchPos.y))
         {
@@ -106,6 +116,7 @@ public class Touch_Controls : MonoBehaviour
                 else if (_isUndergrounded)
                 {
                     transform.position = new Vector3(transform.position.x, 0, 0);
+                    transform.GetChild(0).eulerAngles = new Vector3(0, 0, 0);
                     _isUndergrounded = false;
                 }
                 startTouchPos = Vector2.zero;
@@ -123,6 +134,7 @@ public class Touch_Controls : MonoBehaviour
 
     }
 
+    /// this will check is player grounded or not.
     void Raycast()
     {       
         if(Physics.Raycast(transform.position , Vector3.down , out hit, _range, _whatIsGrounded))
@@ -143,6 +155,7 @@ public class Touch_Controls : MonoBehaviour
         {
             Debug.Log("UnderGround");
             groundColl.enabled = false;
+            transform.GetChild(0).eulerAngles = new Vector3(0, 0, -90);
             transform.position = new Vector3(transform.position.x , -3.15f , 0);
             _isUndergrounded = true;
             groundColl.enabled = true;
@@ -156,14 +169,19 @@ public class Touch_Controls : MonoBehaviour
 
     IEnumerator DashTimer()
     {
-        rb.AddForce(Vector3.right * playerMove.maxSpeed * 2, ForceMode.Impulse);
+        playerMove._isDashing = true;
         yield return new WaitForSeconds(_dashDuration);
-        Debug.Log(rb.velocity.magnitude);
-        if (rb.velocity.x > playerMove.maxSpeed)
+        playerMove._isDashing = false;
+    }
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("BreakableWall"))
         {
-            Debug.Log("PlayerDashed");
-            rb.velocity = playerMove.maxSpeed * Vector3.right;
+            if (playerMove._isDashing)
+            {
+                Destroy(other.gameObject);
+            }
         }
-    }    
+    }
 
 }

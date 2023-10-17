@@ -1,15 +1,11 @@
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    Rigidbody rb;
+    [SerializeField] float _dashMultiplier;
+    public bool _isDashing;
     public float _movespeed;
-    public float maxSpeed;
-
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>(); 
-    }
 
     private void FixedUpdate()
     {
@@ -17,10 +13,13 @@ public class PlayerMovement : MonoBehaviour
     }
     public void PlayerMoving()
     {
-        if (rb.velocity.magnitude > maxSpeed)
+        if (_isDashing)
         {
-            return;
+            transform.Translate(Vector3.right * _movespeed * _dashMultiplier * Time.fixedDeltaTime);
         }
-        rb.AddForce(new Vector3(_movespeed * Time.fixedDeltaTime, 0, 0), ForceMode.Acceleration);
+        else
+        {
+            transform.Translate(Vector3.right * _movespeed * Time.fixedDeltaTime);
+        }
     }
 }
