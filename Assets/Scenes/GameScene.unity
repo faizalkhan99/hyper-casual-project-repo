@@ -2110,6 +2110,7 @@ MonoBehaviour:
   _duckTimer: 5
   _dashDuration: 0.4
   _speedDecreaseTimer: 1
+  _speedDecrease__Speed: 0.5
   _whatIsGrounded:
     serializedVersion: 2
     m_Bits: 8

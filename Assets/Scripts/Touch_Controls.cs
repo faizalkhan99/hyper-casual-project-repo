@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class Touch_Controls : MonoBehaviour
 {
-    [SerializeField] float _UpwardForce, _dashTimer , _doubleSwipeTimer , _duckTimer , _dashDuration , _speedDecreaseTimer;
+    [SerializeField] float _UpwardForce, _dashTimer , _doubleSwipeTimer , _duckTimer , _dashDuration , _leftSwipeTimer , _speedDecrease__Speed , _waitTimerForSpeedDecreaser;
     [SerializeField] LayerMask _whatIsGrounded;
     [SerializeField] BoxCollider groundColl;
     
     bool _isgrounded , _isUndergrounded;
     int _doubleJumpCounter, dashCounter , _speedDecreaseCounter , duckCounter;
-    float _jumpForce,_range;
+    float _jumpForce,_range , _moveSpeed;
     float _nextDashTimer , _nextDuckTimer , _nextspeedDecreaseTimer;
     Rigidbody rb;
     PlayerMovement playerMove;
@@ -27,6 +27,7 @@ public class Touch_Controls : MonoBehaviour
         _range = transform.localScale.y;
         duckCounter = 0;
         _isUndergrounded = false;
+        _moveSpeed = playerMove._movespeed;
     }
 
     private void Update()
@@ -47,7 +48,7 @@ public class Touch_Controls : MonoBehaviour
 
         if(_speedDecreaseCounter == 2)
         {
-            Debug.Log("speed decreased");
+            StartCoroutine(SpeedDecreaseTimer());
             _speedDecreaseCounter = 0;
         }
 
@@ -67,7 +68,7 @@ public class Touch_Controls : MonoBehaviour
         if (Time.time > _nextspeedDecreaseTimer)
         {
             _speedDecreaseCounter = 0;
-            _nextspeedDecreaseTimer = Time.time + _speedDecreaseTimer;
+            _nextspeedDecreaseTimer = Time.time + _leftSwipeTimer;
         }
     }
 
@@ -172,6 +173,12 @@ public class Touch_Controls : MonoBehaviour
         playerMove._isDashing = true;
         yield return new WaitForSeconds(_dashDuration);
         playerMove._isDashing = false;
+    }
+    IEnumerator SpeedDecreaseTimer()
+    {
+        playerMove._movespeed = _speedDecrease__Speed;
+        yield return new WaitForSeconds(_waitTimerForSpeedDecreaser);
+        playerMove._movespeed = _moveSpeed;
     }
     private void OnCollisionEnter(Collision other)
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float _dashMultiplier;
-    public bool _isDashing;
+    [HideInInspector] public bool _isDashing;
     public float _movespeed;
 
     private void FixedUpdate()
