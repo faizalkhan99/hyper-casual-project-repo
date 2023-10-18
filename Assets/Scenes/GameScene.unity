@@ -725,7 +725,7 @@ GameObject:
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &183436578
 Transform:
   m_ObjectHideFlags: 0
@@ -2109,8 +2109,9 @@ MonoBehaviour:
   _doubleSwipeTimer: 0.3
   _duckTimer: 5
   _dashDuration: 0.4
-  _speedDecreaseTimer: 1
-  _speedDecrease__Speed: 0.5
+  _leftSwipeTimer: 3
+  _speedDecrease__Speed: 0
+  _waitTimerForSpeedDecreaser: 2
   _whatIsGrounded:
     serializedVersion: 2
     m_Bits: 8
