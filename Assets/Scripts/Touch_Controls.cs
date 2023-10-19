@@ -109,7 +109,7 @@ public class Touch_Controls : MonoBehaviour
 
             if ((endTouchPos.y > startTouchPos.y) && startTouchPos.y != 0 && endTouchPos.y != 0)
             {
-                if (_doubleJumpCounter <= 1 && !_isUndergrounded)
+                if (_doubleJumpCounter <= 0 && !_isUndergrounded)
                 {
                     _doubleJumpCounter++;
                     rb.AddForce(Vector3.up * _jumpForce, ForceMode.Force);

@@ -6,7 +6,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float _dashMultiplier;
     [HideInInspector] public bool _isDashing;
     public float _movespeed;
-
     private void FixedUpdate()
     {
         PlayerMoving();
