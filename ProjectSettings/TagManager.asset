@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - BreakableWall
+  - Temp
   layers:
   - Default
   - TransparentFX

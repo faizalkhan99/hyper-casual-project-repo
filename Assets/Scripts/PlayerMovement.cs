@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -19,6 +20,20 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             transform.Translate(Vector3.right * _movespeed * Time.fixedDeltaTime);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Temp"))
+        {
+            NextLevel();
+        }
+    }
+    void NextLevel()
+    {
+        if (PlayerPrefs.GetInt("LevelSelect") < SceneManager.GetActiveScene().buildIndex)
+        {
+            PlayerPrefs.SetInt("LevelSelect", SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
