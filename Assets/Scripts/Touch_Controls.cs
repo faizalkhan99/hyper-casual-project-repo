@@ -13,6 +13,7 @@ public class Touch_Controls : MonoBehaviour
     float _nextDashTimer , _nextDuckTimer , _nextspeedDecreaseTimer;
     Rigidbody rb;
     PlayerMovement playerMove;
+    Animator _playerAnim;
     Vector2 startTouchPos , endTouchPos;
     RaycastHit hit;
 
@@ -20,6 +21,7 @@ public class Touch_Controls : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerMove = GetComponent<PlayerMovement>();
+        _playerAnim = GetComponentInChildren<Animator>();
     }
     private void Start()
     {
@@ -112,12 +114,15 @@ public class Touch_Controls : MonoBehaviour
                 if (_doubleJumpCounter <= 0 && !_isUndergrounded)
                 {
                     _doubleJumpCounter++;
+
+                    _playerAnim.SetTrigger("Jump");
                     rb.AddForce(Vector3.up * _jumpForce, ForceMode.Force);
                 }
                 else if (_isUndergrounded)
                 {
+                    _playerAnim.SetTrigger("IsJumpAttack");
                     transform.position = new Vector3(transform.position.x, 0, 0);
-                    transform.GetChild(0).eulerAngles = new Vector3(0, 0, 0);
+                    transform.GetChild(0).eulerAngles = new Vector3(0, 90, 0);
                     _isUndergrounded = false;
                 }
                 startTouchPos = Vector2.zero;
@@ -154,16 +159,20 @@ public class Touch_Controls : MonoBehaviour
         yield return new WaitForSeconds(_doubleSwipeTimer);
         if(duckCounter >= 2) 
         {
+            _playerAnim.SetTrigger("IsDiving");
             Debug.Log("UnderGround");
             groundColl.enabled = false;
-            transform.GetChild(0).eulerAngles = new Vector3(0, 0, -90);
+            transform.GetChild(0).eulerAngles = new Vector3(0, 90, 0);
             transform.position = new Vector3(transform.position.x , -3.15f , 0);
+            _playerAnim.SetTrigger("IsSwimming");
             _isUndergrounded = true;
             groundColl.enabled = true;
         }
         else if(duckCounter == 1)
         {
             Debug.Log("Duck");
+            GetComponent<CapsuleCollider>().height = 0.8f;
+            _playerAnim.SetTrigger("IsDuck");
         }
         duckCounter = 0;
     }
@@ -189,6 +198,10 @@ public class Touch_Controls : MonoBehaviour
                 Destroy(other.gameObject);
             }
         }
+    }
+    void DuckEnd()
+    {
+        GetComponent<CapsuleCollider>().height = 1.319362f;
     }
 
 }
