@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelSelector : MonoBehaviour
@@ -18,5 +19,10 @@ public class LevelSelector : MonoBehaviour
             }
         }
 
+    }
+
+    public void LevelSelect(string level)
+    {
+        SceneManager.LoadScene(level);
     }
 }

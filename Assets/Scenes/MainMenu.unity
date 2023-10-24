@@ -576,7 +576,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 51894262}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1987958067}
+        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+        m_MethodName: LevelSelect
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Level2
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &60777341
 GameObject:
   m_ObjectHideFlags: 0
@@ -1938,7 +1950,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &863672704
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3363,7 +3375,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1715046984}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1987958067}
+        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+        m_MethodName: LevelSelect
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: GameScene
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1790947362
 GameObject:
   m_ObjectHideFlags: 0
@@ -3636,3 +3660,4 @@ MonoBehaviour:
   _mainMenu: {fileID: 415867172}
   _credits: {fileID: 1790947362}
   _settings: {fileID: 1912301006}
+  _levelSelector: {fileID: 863672703}
